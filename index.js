@@ -67,7 +67,13 @@ exports.handler = function(event, context) {
         }
 
         image.size(function(err, size) {
-          var scalingFactor = Math.min(THUMB_WIDTH / size.width, THUMB_HEIGHT / size.height),
+          /*
+           * scalingFactor should be calculated to fit either the width or the height
+           * within 150x150 optimally, keeping the aspect ratio. Additionally, if the image 
+           * is smaller than 150px in both dimensions, keep the original image size and just 
+           * convert to png for the thumbnail's display
+           */
+          var scalingFactor = Math.min(1, THUMB_WIDTH / size.width, THUMB_HEIGHT / size.height),
           width = scalingFactor * size.width,
           height = scalingFactor * size.height;
 
